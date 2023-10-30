@@ -6,6 +6,8 @@ from langchain.schema import AIMessage, HumanMessage, SystemMessage
 from langchain.chat_models import ChatOpenAI
 from langchain.prompts import PromptTemplate
 from langchain.chains import LLMChain, SimpleSequentialChain
+from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain.embeddings import OpenAIEmbeddings
 
 load_dotenv()
 api_key = os.getenv("OPENAI_API_KEY")
@@ -42,7 +44,7 @@ chain = LLMChain(llm=llm, prompt=prompt)
 
 second_prompt = PromptTemplate(
     input_variables=["ml_concept"],
-    template="Turn the concept description of {ml_concept} and explain it to me like I'm five",
+    template="Turn the concept description of {ml_concept} and explain it to me like I'm five in 500 words",
 )
 
 chain_two = LLMChain(llm=llm, prompt=second_prompt)
@@ -51,4 +53,16 @@ overall_chain = SimpleSequentialChain(chains=[chain, chain_two], verbose=True)
 
 # Run chain specifying the input variable for the first chain.
 explanation = overall_chain.run("autoencoder")
-print(f"Overall Chain: {explanation}")
+# print(f"Overall Chain: {explanation}")
+
+# Embeddings and Vector Stores
+# Split the text into basic chunks
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=100, chunk_overlap=0)
+
+# Create a list of these chunks with some other generated data
+texts = text_splitter.create_documents([explanation])
+print(texts)
+# Create an embedding with these chunks
+embeddings = OpenAIEmbeddings(model_name="ada")
+query_result = embeddings.embed_query(texts[0].page_content)
+print(f"Query Result: {query_result}")
