@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="Black">
+    <option name="enabledOnReformat" value="true" />
+    <option name="enabledOnSave" value="true" />
+    <option name="pathToExecutable" value="C:\Users\ARBR\AppData\Local\Programs\Python\Python311\Scripts\black.exe" />
+    <option name="sdkUUID" value="ab52f681-a16c-4000-9d45-83a7c79d9ff9" />
+  </component>
+  <component name="ProjectRootManager" version="2" project-jdk-name="Python 3.11 (langchain-openai-demo)" project-jdk-type="Python SDK" />
+</project>
